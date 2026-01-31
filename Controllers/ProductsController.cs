@@ -15,22 +15,26 @@ namespace BestStoreMVC.Controllers
         public IActionResult Index()
         {
             var products = context.Products.OrderByDescending(p => p.Id).ToList();
-           
+
             return View(products);
+        }
+        public IActionResult Create()
+        {
+
+            return View();
         }
         [HttpPost]
         public IActionResult Create(ProductDto productDto)
         {
-            if (productDto == null)
+            if (productDto.ImageFile == null || productDto.ImageFile.Length == 0)
             {
-                ModelState.AddModelError("ImageFile", "The Image file is required.");
+                ModelState.AddModelError(nameof(productDto.ImageFile), "The Image file is required.");
             }
             if (!ModelState.IsValid)
             {
                 return View(productDto);
             }
             return RedirectToAction("Index", "Products");
-
         }
     }
 }
